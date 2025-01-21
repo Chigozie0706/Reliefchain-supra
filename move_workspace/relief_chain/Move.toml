@@ -1,0 +1,16 @@
+[package]
+name = "relief"
+version = "1.0.0"
+authors = []
+
+[addresses]
+module_addr = "b29ec903259f02d5abac73db83ed72f96a1124d9e1eec350cac69c998b92256b"
+
+[dev-addresses]
+
+[dependencies.SupraFramework]
+git = "https://github.com/Entropy-Foundation/aptos-core.git"
+rev = "dev"
+subdir = "aptos-move/framework/supra-framework"
+
+[dev-dependencies]
