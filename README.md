@@ -123,38 +123,38 @@ ReliefChain is a Move-based smart contract module designed for decentralized man
 ### 1. Initialize the Management System:
 
 ```bash
-supra move tool run --function-id '::relief_center_management::create_management' \
+supra move tool run --function-id '<exampleAddress>::relief_center_management::create_management' \
   --url https://rpc-testnet.supra.com
 ```
 
 ### 2. Add a Relief Center:
 
 ```bash
-supra move tool run --function-id '::relief_center_management::add_center' \
-  --args string:"Center A" string:"imgUrl" string:"123 Main Street" string:"Lagos" string:"Lagos State" \
+supra move tool run --function-id '<exampleAddress>::relief_center_management::add_center' \
+  --args string:"<Center name>" string:"<Image Url>" string:"<Center location>" string:"<Center city>" string:"<Center state>" \
   --url https://rpc-testnet.supra.com
 ```
 
 ### 3. Donate to a Relief Center:
 
 ```bash
-supra move tool run --function-id '::relief_center_management::donate_to_center' \
-  --args u64:1 u64:100 \
+supra move tool run --function-id '<exampleAddress>::relief_center_management::donate_to_center' \
+  --args u64:<Center Id> u64:<Amount> \
   --url https://rpc-testnet.supra.com
 ```
 
 ### 4. Update a Relief Center:
 
 ```bash
-supra move tool run --function-id '::relief_center_management::update_center' \
-  --args u64:1 string:"Center B" string:"456 Elm Street" string:"Abuja" string:"FCT" string:"img1" \
+supra move tool run --function-id '<exampleAddress>::relief_center_management::update_center' \
+  --args u64:<Center Id> string:"<Center name>" string:"<Center location>" string:"<Center City>" string:"<Center state>" string:"<ImgUrl>" \
   --url https://rpc-testnet.supra.com
 ```
 
 ### 5. View Center Details:
 
 ```bash
-supra move tool run --function-id '::relief_center_management::view_center' \
+supra move tool run --function-id '<exampleAddress>::relief_center_management::view_center' \
   --args address:0xOWNER_ADDRESS u64:1 \
   --url https://rpc-testnet.supra.com
 ```
@@ -162,7 +162,7 @@ supra move tool run --function-id '::relief_center_management::view_center' \
 ### 6. View Account Balance:
 
 ```bash
-supra move tool run --function-id '::relief_center_management::view_balance' \
+supra move tool run --function-id '<exampleAddress>::relief_center_management::view_balance' \
   --args address:0xACCOUNT_ADDRESS \
   --url https://rpc-testnet.supra.com
 ```
@@ -172,7 +172,7 @@ supra move tool run --function-id '::relief_center_management::view_balance' \
 ### Import Key Profile:
 
 ```bash
-supra key import-profile chigozie 0x89811928470d710f9a4055104b874148a3a3a1e778cfae45a652b4c5f3d5f0ec
+supra key import-profile <PROFILE_NAME> <PRIVATE_KEY>
 ```
 
 ### Compile Smart Contract:
@@ -185,7 +185,7 @@ supra move tool compile --package-dir /supra/configs/move_workspace/relief_chain
 
 ```bash
 supra move tool publish --package-dir /supra/configs/move_workspace/relief_chain \
-  --profile chigozie \
+  --profile <PROFILE_NAME> \
   --url https://rpc-testnet.supra.com
 ```
 
