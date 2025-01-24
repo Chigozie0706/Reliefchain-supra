@@ -48,7 +48,9 @@ module module_addr::relief_center_management {
     public entry fun create_management(account: &signer) {
 
         let signer_address = signer::address_of(account);
-        assert!(!exists<ReliefCenterManagement>(signer_address), E_NOT_INITIALIZED);
+        
+        // Ensure the management system is not already initialized
+         assert!(!exists<ReliefCenterManagement>(signer_address), E_NOT_INITIALIZED);
 
         let management = ReliefCenterManagement {
             centers: table::new(),
@@ -94,7 +96,7 @@ module module_addr::relief_center_management {
             city,
             state,
             active: true,
-            total_donations: 0, // Initialize total donations
+            total_donations: 0, 
 
         };
 
@@ -130,6 +132,13 @@ module module_addr::relief_center_management {
         // Ensure the donor has sufficient balance
         assert!(balance >= amount, E_INSUFFICIENT_BALANCE);
 
+        // Withdraw the amount from the donor's wallet
+        let coins = coin::withdraw<supra_coin::SupraCoin>(account, amount);
+
+        // Deposit the withdrawn amount into the relief center's address
+        coin::deposit<supra_coin::SupraCoin>(center_record.address, coins);
+
+
         let donation_record = DonationRecord {
             donor: signer_address,
             amount,
@@ -139,9 +148,6 @@ module module_addr::relief_center_management {
         table::upsert(&mut management.donations, center_id, donation_record);
 
         center_record.total_donations = center_record.total_donations + amount;
-
-         // Transfer SupraCoin from donor to relief center
-        coin::transfer<supra_coin::SupraCoin>(account, center_record.address, amount);
 
         event::emit_event<DonationRecord>(
             &mut borrow_global_mut<ReliefCenterManagement>(signer_address).donation_event,

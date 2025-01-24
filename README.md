@@ -1,15 +1,17 @@
-# Relief Center Management Module
+# ReliefChain - Decentralized Relief Center Management
 
-This is a Move smart contract module designed for decentralized management of relief centers on a blockchain. The module allows users to create, manage, and donate to relief centers using the `supra_coin` cryptocurrency, ensuring transparency and accountability in relief efforts.
+ReliefChain is a Move-based smart contract module designed for decentralized management of relief centers. This solution enables users to create, manage, and donate to relief centers using `supra_coin`, ensuring transparency, accountability, and trust in relief efforts.
 
 ## Features
 
 ### 1. **Initialization**
 
-- **Function**: `create_management`
-- **Purpose**: Initializes the `ReliefCenterManagement` system for an account.
-- Ensures that the system is not already initialized.
-- Sets up resources for managing relief centers, donation records, and event tracking.
+#### `create_management`
+
+- **Purpose**: Initializes the ReliefChain system for an account.
+- **Details**:
+  - Ensures the system is not already initialized.
+  - Sets up resources for managing relief centers, donation records, and events.
 
 ### 2. **Relief Center Management**
 
@@ -19,11 +21,11 @@ This is a Move smart contract module designed for decentralized management of re
 - **Purpose**: Adds a new relief center.
 - **Parameters**:
   - `name`: Name of the relief center.
-  - `imageUrl`: URL for the center’s image.
-  - `location`: Specific location of the center.
+  - `imageUrl`: URL of the center’s image.
+  - `location`: Specific address of the center.
   - `city`: City where the center is located.
   - `state`: State where the center is located.
-- Automatically assigns a unique ID and marks the center as active.
+- **Features**: Automatically assigns a unique ID and marks the center as active.
 
 #### Update Relief Center Details
 
@@ -49,8 +51,9 @@ This is a Move smart contract module designed for decentralized management of re
 - **Parameters**:
   - `center_id`: Unique ID of the center.
   - `amount`: Amount to donate in `supra_coin`.
-- Validates the existence and active status of the center and ensures sufficient balance.
-- Transfers the donation amount to the center’s account.
+- **Features**:
+  - Validates the existence and active status of the center.
+  - Ensures sufficient balance before transferring the donation amount.
 
 ### 4. **Viewing Details**
 
@@ -73,7 +76,7 @@ This is a Move smart contract module designed for decentralized management of re
 
 ### ReliefCenterManagement
 
-- **Purpose**: Main resource managing relief centers and donations.
+- **Purpose**: Manages relief centers and donations.
 - **Fields**:
   - `centers`: Table mapping center IDs to `ReliefCenter` records.
   - `add_center_event`: Event handle for new centers.
@@ -88,8 +91,8 @@ This is a Move smart contract module designed for decentralized management of re
   - `center_id`: Unique ID of the center.
   - `address`: Address of the owner.
   - `name`: Name of the center.
-  - `imageUrl`: URL for the center’s image.
-  - `location`: Specific location of the center.
+  - `imageUrl`: URL of the center’s image.
+  - `location`: Specific address of the center.
   - `city`: City where the center is located.
   - `state`: State where the center is located.
   - `active`: Status of the center (active/inactive).
@@ -115,37 +118,79 @@ This is a Move smart contract module designed for decentralized management of re
 - **New Center Added**: Triggered when a relief center is created.
 - **Donation Made**: Triggered when a donation is successfully processed.
 
-## Usage Example
+## Usage Examples
 
-1. **Initialize the Management System**:
+### 1. Initialize the Management System:
 
-   ```move
-   create_management(&signer);
-   ```
+```bash
+supra move tool run --function-id '::relief_center_management::create_management' \
+  --url https://rpc-testnet.supra.com
+```
 
-2. **Add a Relief Center**:
+### 2. Add a Relief Center:
 
-   ```move
-   add_center(&signer, "Center Name", "https://image.url", "123 Main St", "CityName", "StateName");
-   ```
+```bash
+supra move tool run --function-id '::relief_center_management::add_center' \
+  --args string:"Center A" string:"imgUrl" string:"123 Main Street" string:"Lagos" string:"Lagos State" \
+  --url https://rpc-testnet.supra.com
+```
 
-3. **Donate to a Relief Center**:
+### 3. Donate to a Relief Center:
 
-   ```move
-   donate_to_center(&signer, 1, 100);
-   ```
+```bash
+supra move tool run --function-id '::relief_center_management::donate_to_center' \
+  --args u64:1 u64:100 \
+  --url https://rpc-testnet.supra.com
+```
 
-4. **View Center Details**:
+### 4. Update a Relief Center:
 
-   ```move
-   view_center(owner_address, 1);
-   ```
+```bash
+supra move tool run --function-id '::relief_center_management::update_center' \
+  --args u64:1 string:"Center B" string:"456 Elm Street" string:"Abuja" string:"FCT" string:"img1" \
+  --url https://rpc-testnet.supra.com
+```
 
-5. **View Account Balance**:
-   ```move
-   view_balance(account_address);
-   ```
+### 5. View Center Details:
+
+```bash
+supra move tool run --function-id '::relief_center_management::view_center' \
+  --args address:0xOWNER_ADDRESS u64:1 \
+  --url https://rpc-testnet.supra.com
+```
+
+### 6. View Account Balance:
+
+```bash
+supra move tool run --function-id '::relief_center_management::view_balance' \
+  --args address:0xACCOUNT_ADDRESS \
+  --url https://rpc-testnet.supra.com
+```
+
+## Deployment Commands
+
+### Import Key Profile:
+
+```bash
+supra key import-profile chigozie 0x89811928470d710f9a4055104b874148a3a3a1e778cfae45a652b4c5f3d5f0ec
+```
+
+### Compile Smart Contract:
+
+```bash
+supra move tool compile --package-dir /supra/configs/move_workspace/relief_chain
+```
+
+### Publish Smart Contract:
+
+```bash
+supra move tool publish --package-dir /supra/configs/move_workspace/relief_chain \
+  --profile chigozie \
+  --url https://rpc-testnet.supra.com
+```
+
+you can check this page for complete documentation on how to deploy [here](https://docs.supra.com/move/getting-started)
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
